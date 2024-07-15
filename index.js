@@ -11,7 +11,20 @@ const personObj = {
     age:"20",
     email: "tina@gmail.com"
 }
-app.get("/person",(req,res)=>{
+
+
+const validateUser = (req,res,next)=>{
+    const ourPasscode = "qwerty"
+    const {passcode} = req.headers
+    if(passcode === ourPasscode){
+        next();
+    }else{
+        res.status(400).json({message: "unauthorised credentials"})
+    }
+}
+
+app.get("/person",validateUser,(req,res)=>{
+    console.log(req.headers);
     res.status(200).json(personObj)
 })
 
